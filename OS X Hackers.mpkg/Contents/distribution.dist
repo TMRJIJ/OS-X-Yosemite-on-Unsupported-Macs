@@ -1,0 +1,688 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<installer-script authoringTool="Packages" authoringToolVersion="1.1.2" authoringToolBuild="2B104" minSpecVersion="1.0">
+    <options customize="always"/>
+    <installation-check script="installation_check()"/>
+    <volume-check script="volume_check()"/>
+    <!--+==========================+
+        |       Presentation       |
+        +==========================+-->
+    <title>DISTRIBUTION_TITLE</title>
+    <background file="background" scaling="tofit" alignment="center"/>
+    <readme file="readme.rtfd"/>
+    <license file="license.rtf"/>
+    <conclusion file="conclusion.rtf"/>
+    <!--+==========================+
+        |         Installer        |
+        +==========================+-->
+    <choices-outline>
+        <line choice="installer_choice_1"/>
+        <line choice="installer_choice_2"/>
+        <line choice="installer_choice_3"/>
+        <line choice="installer_choice_4"/>
+        <line choice="installer_choice_5"/>
+        <line choice="installer_choice_6"/>
+        <line choice="installer_choice_7"/>
+    </choices-outline>
+    <choice id="installer_choice_1" start_enabled="installer_choice_1_requirement(false,false)" start_selected="installer_choice_1_selected(true) &amp;&amp; installer_choice_1_requirement(false,true)" selected="installer_choice_1_selected(false) &amp;&amp; installer_choice_1_requirement(false,true)" title="INSTALLER_CHOICE_1_TITLE" description="INSTALLER_CHOICE_1_DESCRIPTION">
+        <pkg-ref id="com.JohnsonNetwork.pkg.OSXHackers"/>
+    </choice>
+    <choice id="installer_choice_2" start_enabled="installer_choice_2_enabled() &amp;&amp; installer_choice_2_requirement(false,false)" enabled="installer_choice_2_enabled() &amp;&amp; installer_choice_2_requirement(false,false)" start_selected="installer_choice_2_selected(true) &amp;&amp; installer_choice_2_requirement(false,true)" selected="installer_choice_2_selected(false) &amp;&amp; installer_choice_2_requirement(false,true)" title="El Capitan" description="INSTALLER_CHOICE_2_DESCRIPTION">
+        <pkg-ref id="com.JohnsonNetwork.pkg.elcapitan"/>
+    </choice>
+    <choice id="installer_choice_3" start_enabled="installer_choice_3_enabled() &amp;&amp; installer_choice_3_requirement(false,false)" enabled="installer_choice_3_enabled() &amp;&amp; installer_choice_3_requirement(false,false)" start_selected="installer_choice_3_selected(true) &amp;&amp; installer_choice_3_requirement(false,true)" selected="installer_choice_3_selected(false) &amp;&amp; installer_choice_3_requirement(false,true)" title="Yosemite" description="INSTALLER_CHOICE_3_DESCRIPTION">
+        <pkg-ref id="com.JohnsonNetwork.pkg.Yosemite"/>
+    </choice>
+    <choice id="installer_choice_4" start_enabled="installer_choice_4_enabled() &amp;&amp; installer_choice_4_requirement(false,false)" enabled="installer_choice_4_enabled() &amp;&amp; installer_choice_4_requirement(false,false)" start_selected="installer_choice_4_selected(true) &amp;&amp; installer_choice_4_requirement(false,true)" selected="installer_choice_4_selected(false) &amp;&amp; installer_choice_4_requirement(false,true)" title="Mavericks" description="INSTALLER_CHOICE_4_DESCRIPTION">
+        <pkg-ref id="com.JohnsonNetwork.pkg.Mavericks"/>
+    </choice>
+    <choice id="installer_choice_5" start_enabled="installer_choice_5_requirement(false,false)" start_selected="installer_choice_5_selected(true) &amp;&amp; installer_choice_5_requirement(false,true)" selected="installer_choice_5_selected(false) &amp;&amp; installer_choice_5_requirement(false,true)" title="Mountain Lion" description="INSTALLER_CHOICE_5_DESCRIPTION">
+        <pkg-ref id="com.JohnsonNetwork.pkg.MountainLion"/>
+    </choice>
+    <choice id="installer_choice_6" start_enabled="installer_choice_6_enabled()" enabled="installer_choice_6_enabled()" start_selected="installer_choice_6_selected(true)" selected="installer_choice_6_selected(false)" title="OpenGL Beta Mod (10.9 - 10.11)" description="INSTALLER_CHOICE_6_DESCRIPTION">
+        <pkg-ref id="com.JohnsonNetwork.pkg.GFXMod"/>
+    </choice>
+    <choice id="installer_choice_7" start_visible="false" title="NoSleepPkg" description="">
+        <pkg-ref id="com.protech.pkg.NoSleep"/>
+    </choice>
+    <!--+==========================+
+        |    Package References    |
+        +==========================+-->
+    <pkg-ref id="com.protech.pkg.NoSleep" version="1.4.0" auth="Root" installKBytes="2569">file:./Contents/Packages/NoSleepPkg.pkg</pkg-ref>
+    <pkg-ref id="com.JohnsonNetwork.pkg.Mavericks" version="1.3" auth="Root" installKBytes="1390">http://dl.osxhackers.net/OSXH/Resources/Mavericks.pkg</pkg-ref>
+    <pkg-ref id="com.JohnsonNetwork.pkg.GFXMod" version="1.0.9" auth="Root" installKBytes="61531">http://dl.osxhackers.net/OSXH/Resources/OpenGL%20Beta%20Mod%20(10.9%20-%2010.11).pkg</pkg-ref>
+    <pkg-ref id="com.JohnsonNetwork.pkg.MountainLion" version="1.3.1" auth="Root" installKBytes="62067">http://dl.osxhackers.net/OSXH/Resources/Mountain%20Lion.pkg</pkg-ref>
+    <pkg-ref id="com.JohnsonNetwork.pkg.Yosemite" version="1.3" auth="Root" installKBytes="11792">http://dl.osxhackers.net/OSXH/Resources/Yosemite.pkg</pkg-ref>
+    <pkg-ref id="com.JohnsonNetwork.pkg.elcapitan" version="1.3" auth="Root" installKBytes="28797">http://dl.osxhackers.net/OSXH/Resources/El%20Capitan.pkg</pkg-ref>
+    <pkg-ref id="com.JohnsonNetwork.pkg.OSXHackers" version="1.3" auth="Root" installKBytes="70412">http://dl.osxhackers.net/OSXH/Resources/OS%20X%20Hackers.pkg</pkg-ref>
+    <!--+==========================+
+        |    JavaScript Scripts    |
+        +==========================+-->
+    <script>
+
+	const __IC_FLAT_DISTRIBUTION__=false;
+	const IC_DISK_TYPE_DESTINATION=0;
+	const IC_DISK_TYPE_STARTUP_DISK=1;
+	const IC_OS_DISTRIBUTION_TYPE_ANY=0;
+	const IC_OS_DISTRIBUTION_TYPE_CLIENT=1;
+	const IC_OS_DISTRIBUTION_TYPE_SERVER=2;
+
+	const IC_CPU_ARCHITECTURE_ANY=0;
+	const IC_CPU_ARCHITECTURE_POWERPC=18;
+	const IC_CPU_ARCHITECTURE_INTEL=7;
+	const IC_CPU_ARCHITECTURE_TYPE_ANY=0;
+	const IC_CPU_ARCHITECTURE_TYPE_32=1;
+	const IC_CPU_ARCHITECTURE_TYPE_64=2;
+
+	const IC_CONDITION_EXIST=0;
+	const IC_CONDITION_DOES_NOT_EXIST=1;
+	const IC_SELECTOR_ANY=0;
+	const IC_SELECTOR_ALL=1;
+
+	function IC_CheckOS(inDiskType,inMustBeInstalled,inMinimumVersion,inDistributionType)
+	{
+		var tOSVersion=undefined;
+		
+		/* Check Minimum Version */
+		
+		if (inDiskType==IC_DISK_TYPE_DESTINATION)
+		{
+			if (my.target.systemVersion!=undefined)
+			{
+				tOSVersion=my.target.systemVersion.ProductVersion;
+			}
+			
+			/* Check if no OS is installed on the potential target */
+			
+			if (tOSVersion==undefined)
+			{
+				return (inMustBeInstalled==false);
+			}
+		}
+		else
+		{
+			tOSVersion=system.version.ProductVersion;
+		}
+		
+		if (system.compareVersions(tOSVersion,inMinimumVersion)==-1)
+		{
+			return false;
+		}
+		
+		/* Check Distribution Type */
+		
+		if (inDistributionType!=IC_OS_DISTRIBUTION_TYPE_ANY)
+		{
+			var tIsServer;
+			
+			if (system.compareVersions(tOSVersion,'10.8.0')==-1)
+			{
+				if (inDiskType==IC_DISK_TYPE_DESTINATION)
+				{
+					tIsServer=system.files.fileExistsAtPath(my.target.mountpoint+'/System/Library/CoreServices/ServerVersion.plist');
+				}
+				else
+				{
+					tIsServer=system.files.fileExistsAtPath('/System/Library/CoreServices/ServerVersion.plist');
+				}
+			}
+			else
+			{
+				if (inDiskType==IC_DISK_TYPE_DESTINATION)
+				{
+					tIsServer=system.files.fileExistsAtPath(my.target.mountpoint+'/Applications/Server.app');
+				}
+				else
+				{
+					tIsServer=system.files.fileExistsAtPath('/Applications/Server.app');
+				}
+			}
+			
+			if (inDistributionType==IC_OS_DISTRIBUTION_TYPE_CLIENT &amp;&amp; tIsServer==true)
+			{
+				return false;
+			}
+			
+			if (inDistributionType==IC_OS_DISTRIBUTION_TYPE_SERVER &amp;&amp; tIsServer==false)
+			{
+				return false;
+			}
+		}
+		
+		return true;
+	}
+
+	function IC_CheckMinimumRAMSize(inMinimumSize)
+	{
+		return (system.sysctl('hw.memsize')&gt;=inMinimumSize);
+	}
+
+	function installation_check()
+	{
+		var tResult;
+
+		tResult=IC_CheckOS(IC_DISK_TYPE_STARTUP_DISK,true,'10.5',IC_OS_DISTRIBUTION_TYPE_ANY);
+
+		if (tResult==false)
+		{
+			my.result.title = system.localizedStandardStringWithFormat('InstallationCheckError', system.localizedString('DISTRIBUTION_TITLE'));
+			my.result.message = ' ';
+			my.result.type = 'Fatal';
+		}
+
+		if (tResult==true)
+		{
+			tResult=IC_CheckMinimumRAMSize(2147483648);
+
+			if (tResult==false)
+			{
+				my.result.title = system.localizedString('REQUIREMENT_FAILED_MESSAGE_INSTALLATION_CHECK_1');
+				my.result.message = system.localizedString('REQUIREMENT_FAILED_DESCRIPTION_INSTALLATION_CHECK_1');
+				my.result.type = 'Fatal';
+			}
+		}
+
+		return tResult;
+	}
+
+	function volume_check()
+	{
+		var tResult;
+
+		tResult=IC_CheckOS(IC_DISK_TYPE_DESTINATION,true,'10.7',IC_OS_DISTRIBUTION_TYPE_ANY);
+
+		if (tResult==false)
+		{
+			my.result.message = system.localizedString('REQUIREMENT_FAILED_MESSAGE_VOLUME_CHECK_2');
+			my.result.type = 'Fatal';
+		}
+
+		return tResult;
+	}
+
+	function IC_CheckCPU(inMinimumCoresCount,inSupportedArchitecture,inSupportedPowerPCArchitectureType,inSupportedIntelArchitectureType,inMinimumFrequency)
+	{
+		/* Check Minimum Core Count */
+		
+		if (system.sysctl('hw.ncpu')&gt;=inMinimumCoresCount)
+		{
+			var tArchitecture;
+			var t64BitSupport;
+			
+			tArchitecture=system.sysctl('hw.cputype');
+			
+			/* Check Architecture */
+			
+			if (inSupportedArchitecture!=IC_CPU_ARCHITECTURE_ANY)
+			{
+				if (inSupportedArchitecture!=tArchitecture)
+				{
+					return false;
+				}
+			}
+			
+			/* Check Architecture Type */
+			
+			t64BitSupport=system.sysctl('hw.cpu64bit_capable');
+			
+			if (tArchitecture==IC_CPU_ARCHITECTURE_POWERPC)
+			{
+				if ((inSupportedPowerPCArchitectureType==IC_CPU_ARCHITECTURE_TYPE_32 &amp;&amp; t64BitSupport==1) ||
+					(inSupportedPowerPCArchitectureType==IC_CPU_ARCHITECTURE_TYPE_64 &amp;&amp; t64BitSupport==0))
+				{
+					return false;
+				}
+			}
+			else if (tArchitecture==IC_CPU_ARCHITECTURE_INTEL)
+			{
+				if ((inSupportedIntelArchitectureType==IC_CPU_ARCHITECTURE_TYPE_32 &amp;&amp; t64BitSupport==1) ||
+					(inSupportedIntelArchitectureType==IC_CPU_ARCHITECTURE_TYPE_64 &amp;&amp; t64BitSupport==0))
+				{
+					return false;
+				}
+			}
+			
+			/* Check Minimum CPU Frequency */
+			
+			if (system.sysctl('hw.cpufrequency_max')&gt;=inMinimumFrequency)
+			{
+				return true;
+			}
+		}
+		
+		return false;
+	}
+
+	function installer_choice_1_requirement(inCheckVisibilityOnly,inShowFailedToolTip)
+	{
+		var tResult;
+
+		tResult=IC_CheckCPU(2,IC_CPU_ARCHITECTURE_INTEL,IC_CPU_ARCHITECTURE_TYPE_ANY,IC_CPU_ARCHITECTURE_TYPE_ANY,866666);
+
+		if (tResult==false)
+		{
+			if (inCheckVisibilityOnly==true)
+			{
+				tResult=true;
+			}
+		}
+
+		if (tResult==true)
+		{
+			tResult=IC_CheckMinimumRAMSize(2147483648);
+
+			if (tResult==false)
+			{
+				if (inCheckVisibilityOnly==true)
+				{
+					tResult=true;
+				}
+				else
+				{
+					if (inShowFailedToolTip==true)
+					{
+						choices.installer_choice_1.tooltip=system.localizedString('INSTALLER_CHOICE_1_REQUIREMENT_FAILED_1');
+					}
+				}
+			}
+		}
+
+		return tResult;
+	}
+
+	function installer_choice_1_selected(isStart)
+	{
+		var tSelected;
+
+		tSelected=(choices.installer_choice_6.enabled || (choices.installer_choice_2.enabled || (choices.installer_choice_3.enabled || (choices.installer_choice_4.enabled || choices.installer_choice_5.enabled))));
+
+		if (isStart==true)
+		{
+			return tSelected;
+		}
+
+		return (tSelected &amp;&amp; my.choice.selected);
+	}
+
+	function IC_CheckFiles(inSelector,inCondition,inDiskType,inFiles)
+	{
+		var tCount;
+		
+		tCount=inFiles.length;
+		
+		if (tCount&gt;0)
+		{
+			var tIndex;
+			var tExists;
+			var tPath;
+			var atLeastOneTrue=false;
+			
+			for(tIndex=0;tIndex&lt;tCount;tIndex++)
+			{
+				tPath=inFiles[tIndex];
+			
+				if (inDiskType==IC_DISK_TYPE_DESTINATION)
+				{
+					tPath=my.target.mountpoint+tPath;
+				}
+			
+				if (system.files.fileExistsAtPath(tPath)==true)
+				{
+					if (inCondition==IC_CONDITION_EXIST)
+					{
+						atLeastOneTrue=true;
+						
+						if (inSelector==IC_SELECTOR_ANY)
+						{
+							return true;
+						}
+					}
+					else if (inCondition==IC_CONDITION_DOES_NOT_EXIST &amp;&amp; inSelector==IC_SELECTOR_ALL)
+					{
+						return false;
+					}
+				}
+				else
+				{
+					if (inCondition==IC_CONDITION_EXIST &amp;&amp; inSelector==IC_SELECTOR_ALL)
+					{
+						return false;
+					}
+					else if (inCondition==IC_CONDITION_DOES_NOT_EXIST)
+					{
+						atLeastOneTrue=true;
+						
+						if (inSelector==IC_SELECTOR_ANY)
+						{
+							return true;
+						}
+					}
+				}
+			}
+		
+			return atLeastOneTrue;
+		}
+		
+		return true;
+	}
+
+	function installer_choice_2_requirement(inCheckVisibilityOnly,inShowFailedToolTip)
+	{
+		var tResult;
+
+		tResult=IC_CheckCPU(2,IC_CPU_ARCHITECTURE_INTEL,IC_CPU_ARCHITECTURE_TYPE_ANY,IC_CPU_ARCHITECTURE_TYPE_ANY,866666);
+
+		if (tResult==false)
+		{
+			if (inCheckVisibilityOnly==true)
+			{
+				tResult=true;
+			}
+		}
+
+		if (tResult==true)
+		{
+			tResult=IC_CheckMinimumRAMSize(2147483648);
+
+			if (tResult==false)
+			{
+				if (inCheckVisibilityOnly==true)
+				{
+					tResult=true;
+				}
+			}
+
+			if (tResult==true)
+			{
+				var tFilesToCheck2=new Array('/Applications/Install\ OS\ X\ 10.11\ Developer\ Beta.app',
+				                             '/Applications/Install\ OS\ X\ El\ Capitan.app',
+				                             '/Applications/Install\ OS\ X\ El\ Capitan\ Public\ Beta.app',
+				                             '/Applications/OS\ X\ Hackers\ Patch\ Files/.Developers/ecap.eboot');
+
+				tResult=IC_CheckFiles(IC_SELECTOR_ANY,IC_CONDITION_EXIST,IC_DISK_TYPE_DESTINATION,tFilesToCheck2);
+
+				if (tResult==false)
+				{
+					if (inCheckVisibilityOnly==true)
+					{
+						tResult=true;
+					}
+					else
+					{
+						if (inShowFailedToolTip==true)
+						{
+							choices.installer_choice_2.tooltip=system.localizedString('INSTALLER_CHOICE_2_REQUIREMENT_FAILED_1');
+						}
+					}
+				}
+			}
+		}
+
+		return tResult;
+	}
+
+	function installer_choice_2_enabled()
+	{
+		return choices.installer_choice_1.enabled;	
+	}
+
+	function installer_choice_2_selected(isStart)
+	{
+		var tSelected;
+
+		tSelected=(!choices.installer_choice_3.enabled &amp;&amp; !choices.installer_choice_4.enabled);
+
+		if (installer_choice_2_enabled()==false || isStart==true)
+		{
+			return tSelected;
+		}
+
+		return (tSelected &amp;&amp; my.choice.selected);
+	}
+
+	function installer_choice_3_requirement(inCheckVisibilityOnly,inShowFailedToolTip)
+	{
+		var tResult;
+
+		tResult=IC_CheckCPU(1,IC_CPU_ARCHITECTURE_INTEL,IC_CPU_ARCHITECTURE_TYPE_ANY,IC_CPU_ARCHITECTURE_TYPE_ANY,866666);
+
+		if (tResult==false)
+		{
+			if (inCheckVisibilityOnly==true)
+			{
+				tResult=true;
+			}
+			else
+			{
+				if (inShowFailedToolTip==true)
+				{
+					choices.installer_choice_3.tooltip=system.localizedString('INSTALLER_CHOICE_3_REQUIREMENT_FAILED_1');
+				}
+			}
+		}
+
+		if (tResult==true)
+		{
+			tResult=IC_CheckMinimumRAMSize(2147483648);
+
+			if (tResult==false)
+			{
+				if (inCheckVisibilityOnly==true)
+				{
+					tResult=true;
+				}
+				else
+				{
+					if (inShowFailedToolTip==true)
+					{
+						choices.installer_choice_3.tooltip=system.localizedString('INSTALLER_CHOICE_3_REQUIREMENT_FAILED_4');
+					}
+				}
+			}
+
+			if (tResult==true)
+			{
+				var tFilesToCheck2=new Array('/Applications/Install\ OS\ X\ Yosemite.app',
+				                             '/Applications/OS\ X\ Hackers\ Patch\ Files/.Developers/yos.eboot');
+
+				tResult=IC_CheckFiles(IC_SELECTOR_ANY,IC_CONDITION_EXIST,IC_DISK_TYPE_STARTUP_DISK,tFilesToCheck2);
+
+				if (tResult==false)
+				{
+					if (inCheckVisibilityOnly==true)
+					{
+						tResult=true;
+					}
+					else
+					{
+						if (inShowFailedToolTip==true)
+						{
+							choices.installer_choice_3.tooltip=system.localizedString('INSTALLER_CHOICE_3_REQUIREMENT_FAILED_7');
+						}
+					}
+				}
+			}
+		}
+
+		return tResult;
+	}
+
+	function installer_choice_3_enabled()
+	{
+		return choices.installer_choice_1.enabled;	
+	}
+
+	function installer_choice_3_selected(isStart)
+	{
+		var tSelected;
+
+		tSelected=(!choices.installer_choice_4.enabled &amp;&amp; !choices.installer_choice_2.enabled);
+
+		if (installer_choice_3_enabled()==false || isStart==true)
+		{
+			return tSelected;
+		}
+
+		return (tSelected &amp;&amp; my.choice.selected);
+	}
+
+	function installer_choice_4_requirement(inCheckVisibilityOnly,inShowFailedToolTip)
+	{
+		var tResult;
+
+		tResult=IC_CheckCPU(2,IC_CPU_ARCHITECTURE_INTEL,IC_CPU_ARCHITECTURE_TYPE_ANY,IC_CPU_ARCHITECTURE_TYPE_ANY,866666);
+
+		if (tResult==false)
+		{
+			if (inCheckVisibilityOnly==true)
+			{
+				tResult=true;
+			}
+			else
+			{
+				if (inShowFailedToolTip==true)
+				{
+					choices.installer_choice_4.tooltip=system.localizedString('INSTALLER_CHOICE_4_REQUIREMENT_FAILED_1');
+				}
+			}
+		}
+
+		if (tResult==true)
+		{
+			tResult=IC_CheckMinimumRAMSize(2147483648);
+
+			if (tResult==false)
+			{
+				if (inCheckVisibilityOnly==true)
+				{
+					tResult=true;
+				}
+				else
+				{
+					if (inShowFailedToolTip==true)
+					{
+						choices.installer_choice_4.tooltip=system.localizedString('INSTALLER_CHOICE_4_REQUIREMENT_FAILED_4');
+					}
+				}
+			}
+
+			if (tResult==true)
+			{
+				var tFilesToCheck2=new Array('/Applications/Install\ OS\ X\ Mavericks.app',
+				                             '/Applications/OS\ X\ Hackers\ Patch\ Files/.Developers/mav.eboot');
+
+				tResult=IC_CheckFiles(IC_SELECTOR_ANY,IC_CONDITION_EXIST,IC_DISK_TYPE_DESTINATION,tFilesToCheck2);
+
+				if (tResult==false)
+				{
+					if (inCheckVisibilityOnly==true)
+					{
+						tResult=true;
+					}
+				}
+			}
+		}
+
+		return tResult;
+	}
+
+	function installer_choice_4_enabled()
+	{
+		return choices.installer_choice_1.enabled;	
+	}
+
+	function installer_choice_4_selected(isStart)
+	{
+		var tSelected;
+
+		tSelected=(!choices.installer_choice_3.enabled &amp;&amp; !choices.installer_choice_2.enabled);
+
+		if (installer_choice_4_enabled()==false || isStart==true)
+		{
+			return tSelected;
+		}
+
+		return (tSelected &amp;&amp; my.choice.selected);
+	}
+
+	function installer_choice_5_requirement(inCheckVisibilityOnly,inShowFailedToolTip)
+	{
+		var tResult;
+
+		tResult=IC_CheckCPU(2,IC_CPU_ARCHITECTURE_INTEL,IC_CPU_ARCHITECTURE_TYPE_ANY,IC_CPU_ARCHITECTURE_TYPE_ANY,866666);
+
+		if (tResult==false)
+		{
+			if (inCheckVisibilityOnly==true)
+			{
+				tResult=true;
+			}
+			else
+			{
+				if (inShowFailedToolTip==true)
+				{
+					choices.installer_choice_5.tooltip=system.localizedString('INSTALLER_CHOICE_5_REQUIREMENT_FAILED_1');
+				}
+			}
+		}
+
+		if (tResult==true)
+		{
+			var tFilesToCheck1=new Array('/Applications/Install\ OS\ X\ Mountain\ Lion.app',
+			                             '/Applications/OS\ X\ Hackers\ Patch\ Files/.Developers/ml.eboot');
+
+			tResult=IC_CheckFiles(IC_SELECTOR_ANY,IC_CONDITION_EXIST,IC_DISK_TYPE_DESTINATION,tFilesToCheck1);
+
+			if (tResult==false)
+			{
+				if (inCheckVisibilityOnly==true)
+				{
+					tResult=true;
+				}
+				else
+				{
+					if (inShowFailedToolTip==true)
+					{
+						choices.installer_choice_5.tooltip=system.localizedString('INSTALLER_CHOICE_5_REQUIREMENT_FAILED_2');
+					}
+				}
+			}
+		}
+
+		return tResult;
+	}
+
+	function installer_choice_5_selected(isStart)
+	{
+		var tSelected;
+
+		tSelected=((((choices.installer_choice_1.enabled &amp;&amp; !choices.installer_choice_4.enabled) &amp;&amp; !choices.installer_choice_3.enabled) &amp;&amp; !choices.installer_choice_2.enabled) &amp;&amp; !choices.installer_choice_6.enabled);
+
+		if (isStart==true)
+		{
+			return tSelected;
+		}
+
+		return (tSelected &amp;&amp; my.choice.selected);
+	}
+
+	function installer_choice_6_enabled()
+	{
+		return choices.installer_choice_1.enabled;	
+	}
+
+	function installer_choice_6_selected(isStart)
+	{
+		var tSelected;
+
+		tSelected=((choices.installer_choice_3.enabled || choices.installer_choice_2.enabled) || choices.installer_choice_4.enabled);
+
+		if (installer_choice_6_enabled()==false || isStart==true)
+		{
+			return tSelected;
+		}
+
+		return (tSelected &amp;&amp; my.choice.selected);
+	}
+
+    </script>
+</installer-script>
